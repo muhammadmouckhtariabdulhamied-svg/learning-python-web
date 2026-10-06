@@ -1,0 +1,66 @@
+# HTML & CSS — CodePath course
+
+
+## Lesson 1: HTML structure
+
+HTML describes what is on a page using tags like <h1> for headings and <p> for paragraphs.
+
+Save the code below as index.html and open it in your browser.
+
+
+```
+<!doctype html>
+<html>
+  <head><title>My page</title></head>
+  <body>
+    <h1>Hello!</h1>
+    <p>This is my first web page.</p>
+    <a href="https://example.com">A link</a>
+  </body>
+</html>
+```
+
+
+**Try it:** Add an image and a bulleted list (<ul><li>) to your page.
+
+
+## Lesson 2: Styling with CSS
+
+CSS controls how things look. A selector picks elements, and properties change their style.
+
+Put CSS inside a <style> tag in the <head>, or in a separate .css file.
+
+
+```
+<style>
+  body { font-family: sans-serif; margin: 2rem; }
+  h1 { color: tomato; }
+  p { line-height: 1.6; }
+</style>
+```
+
+
+**Try it:** Give your links a new colour and remove their underline.
+
+
+## Lesson 3: Layout with Flexbox
+
+Flexbox lines items up in a row or column and spaces them out.
+
+Set display: flex on a parent, then control spacing with gap and justify-content.
+
+
+```
+<style>
+  .row { display: flex; gap: 1rem; justify-content: space-between; }
+  .box { padding: 1rem; background: #eee; }
+</style>
+<div class="row">
+  <div class="box">One</div>
+  <div class="box">Two</div>
+  <div class="box">Three</div>
+</div>
+```
+
+
+**Try it:** Make the boxes stack vertically with flex-direction: column.

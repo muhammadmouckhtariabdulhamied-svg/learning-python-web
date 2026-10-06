@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Casio fx-991ES PLUS Guide</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --bg-soft: #111827;
+        --panel: rgba(15, 23, 42, 0.7);
+        --panel-strong: #111827;
+        --panel-2: #1f2937;
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --line: rgba(148, 163, 184, 0.25);
+        --accent: #7c3aed;
+        --accent-2: #22c55e;
+        --accent-3: #f59e0b;
+        --warning: #f97316;
+        --danger: #ef4444;
+        --shadow: 0 24px 60px rgba(15, 23, 42, 0.4);
+        --radius: 18px;
+      }
+
+      * { box-sizing: border-box; }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(124, 58, 237, 0.28), transparent 25%),
+          radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.14), transparent 25%),
+          var(--bg);
+        color: var(--text);
+      }
+
+      a { color: inherit; }
+
+      .container {
+        width: min(1200px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(10px);
+        background: rgba(15, 23, 42, 0.7);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .topbar-inner {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 0;
+        flex-wrap: wrap;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      .brand-mark {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #38bdf8);
+        box-shadow: 0 0 18px rgba(124, 58, 237, 0.9);
+      }
+
+      .filters {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .chip {
+        padding: 9px 14px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.08);
+        color: var(--muted);
+        border: 1px solid var(--line);
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .chip.active,
+      .chip:hover {
+        background: linear-gradient(135deg, var(--accent), #5b21b6);
+        color: white;
+        border-color: transparent;
+      }
+
+      .hero {
+        padding: 54px 0 32px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 28px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        background: rgba(148, 163, 184, 0.04);
+      }
+
+      h1 {
+        margin: 18px 0 16px;
+        font-size: clamp(2.2rem, 5vw, 5rem);
+        line-height: 0.96;
+        letter-spacing: -0.06em;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 60ch;
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.8;
+      }
+
+      .hero-card {
+        background: linear-gradient(180deg, rgba(17,24,39,1), rgba(31,41,55,0.9));
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .mini-screen {
+        background: linear-gradient(180deg, #dfe9d6, #cfe0c1);
+        border-radius: 18px;
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 18px 16px 20px;
+        color: #112312;
+        border: 4px solid #475569;
+      }
+
+      .mini-top {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .mini-display {
+        font-size: clamp(2.2rem, 4vw, 3rem);
+        font-weight: 700;
+        text-align: right;
+        font-family: "Consolas", "Courier New", monospace;
+      }
+
+      .key-legend {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+
+      .k {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 42px;
+        min-height: 28px;
+        padding: 5px 10px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-family: "Consolas", monospace;
+        border: 1px solid rgba(148,163,184,0.35);
+        background: rgba(148,163,184,0.08);
+      }
+
+      .key-shift { border-color: rgba(251,191,36,0.6); color: #fbbf24; }
+      .key-alpha { border-color: rgba(248,113,113,0.6); color: #fca5a5; }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0,1fr));
+        gap: 14px;
+        margin-top: 26px;
+      }
+
+      .stat {
+        background: rgba(148,163,184,0.04);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px 16px;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.5rem;
+        line-height: 1.2;
+        margin-bottom: 4px;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .content {
+        padding: 20px 0 70px;
+      }
+
+      .lesson-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .lesson {
+        background: rgba(17, 24, 39, 0.75);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .lesson.hidden {
+        display: none;
+      }
+
+      .lesson-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        padding: 18px 18px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .lesson-title-wrap {
+        min-width: 0;
+      }
+
+      .lesson-level {
+        display: inline-block;
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #c4b5fd;
+        margin-bottom: 6px;
+      }
+
+      .lesson h3 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      .count-tag {
+        flex-shrink: 0;
+        border-radius: 999px;
+        padding: 8px 10px;
+        font-size: 0.7rem;
+        background: rgba(124, 58, 237, 0.15);
+        color: #d8b4fe;
+        border: 1px solid rgba(124,58,237,0.3);
+      }
+
+      .lesson-body {
+        padding: 18px;
+      }
+
+      .lesson-body p {
+        margin: 0 0 14px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .lesson-body strong {
+        color: var(--text);
+      }
+
+      .lesson-example {
+        margin: 18px 0;
+        padding: 16px 14px;
+        background: rgba(148,163,184,0.04);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        color: #dfe7f5;
+        font-family: "Consolas", monospace;
+        white-space: pre-wrap;
+      }
+
+      .mini-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+
+      .action {
+        background: rgba(124,58,237,0.15);
+        border: 1px solid rgba(124,58,237,0.38);
+        color: #ddd6fe;
+        border-radius: 10px;
+        padding: 7px 10px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .action:hover {
+        background: rgba(124,58,237,0.28);
+      }
+
+      .full-guide {
+        margin-top: 28px;
+        background: rgba(17, 24, 39, 0.75);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px 20px 20px;
+      }
+
+      .full-guide h2 {
+        margin: 0 0 10px;
+        font-size: 1.5rem;
+      }
+
+      .full-guide p,
+      .full-guide li {
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      @media (max-width: 920px) {
+        .hero-grid,
+        .lesson-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .topbar-inner {
+          align-items: stretch;
+        }
+
+        .filters {
+          width: 100%;
+        }
+
+        .chip {
+          flex: 1 1 auto;
+          text-align: center;
+        }
+
+        .stats {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <span class="brand-mark"></span>
+          <span>Casio fx-991ES PLUS</span>
+        </div>
+
+        <div class="filters" aria-label="Lesson filters">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip" data-filter="Beginner">Beginner</button>
+          <button class="chip" data-filter="Intermediate">Intermediate</button>
+          <button class="chip" data-filter="Advanced">Advanced</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">Calculator guide • from zero to confident</div>
+            <h1>Learn the Casio fx-991ES PLUS like a pro.</h1>
+            <p>
+              This calculator is powerful because it hides extra functions behind layers of meaning. White means normal,
+              gold means SHIFT, and red means ALPHA. Once you understand that system, the calculator becomes logical instead of confusing.
+            </p>
+
+            <div class="stats">
+              <div class="stat">
+                <strong>3</strong>
+                <span>Function layers</span>
+              </div>
+              <div class="stat">
+                <strong>24+</strong>
+                <span>Core skills</span>
+              </div>
+              <div class="stat">
+                <strong>Fast</strong>
+                <span>Daily use</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="hero-card">
+            <div class="mini-screen">
+              <div class="mini-top">
+                <span>fx-991ES</span>
+                <span>DEG</span>
+              </div>
+              <div class="mini-display">sin(30)</div>
+            </div>
+
+            <div class="key-legend">
+              <span class="k">AC</span>
+              <span class="k key-shift">SHIFT</span>
+              <span class="k key-alpha">ALPHA</span>
+              <span class="k">MODE</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="lesson-grid" id="lessonGrid">
+          <article class="lesson" data-level="Beginner">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Beginner</div>
+                <h3>0. Turn it on and off</h3>
+              </div>
+              <div class="count-tag">00</div>
+            </div>
+            <div class="lesson-body">
+              <p>The first thing to learn is the power cycle. On the fx-991ES PLUS, the calculator turns on with the <span class="k">ON</span> key.</p>
+              <p>To turn it off, press <span class="k key-shift">SHIFT</span> + <span class="k">AC</span>. This is the standard Casio shutdown shortcut.</p>
+              <div class="lesson-example">Power on: ON
+Power off: SHIFT + AC
+Clear screen: AC</div>
+              <p>If the screen is blank, check the battery or make sure the calculator is not off. The calculator does not have a separate power button in the usual laptop style.</p>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Beginner">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Beginner</div>
+                <h3>1. Understand the three colors</h3>
+              </div>
+              <div class="count-tag">01</div>
+            </div>
+            <div class="lesson-body">
+              <p>The biggest mistake new users make is thinking every label is the same. On the fx-991ES PLUS, the same key can do up to 3 jobs.</p>
+              <p><strong>White</strong> = normal function. <strong>Gold</strong> = press <span class="k key-shift">SHIFT</span> first. <strong>Red</strong> = press <span class="k key-alpha">ALPHA</span> first.</p>
+              <div class="lesson-example">Example: tan key
+Normal: tan
+SHIFT + tan = tan⁻¹</div>
+              <p>That is why the calculator looks complicated at first. The good news is that the system is consistent.</p>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Beginner">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Beginner</div>
+                <h3>2. Start with normal arithmetic</h3>
+              </div>
+              <div class="count-tag">02</div>
+            </div>
+            <div class="lesson-body">
+              <p>Type numbers and operations exactly the way you write them.</p>
+              <div class="lesson-example">2 + 3 × 4 = 14
+(2 + 3) × 4 = 20</div>
+              <p>Use brackets to control the order of operations. Without brackets, the calculator follows BODMAS/PEMDAS rules.</p>
+              <div class="mini-actions">
+                <button class="action">Try: 50 ÷ 2 + 3</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Beginner">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Beginner</div>
+                <h3>3. Set the correct mode</h3>
+              </div>
+              <div class="count-tag">03</div>
+            </div>
+            <div class="lesson-body">
+              <p>Press <span class="k">MODE</span> and choose <strong>1 COMP</strong> for normal calculations.</p>
+              <p>Use <span class="k key-shift">SHIFT</span> + <span class="k">MODE</span> for SETUP, where you control things like full display formatting and angle unit.</p>
+              <div class="lesson-example">SETUP → Deg
+This makes trigonometry use degrees.</div>
+              <p>If sin(30) does not return 0.5, the angle mode is probably wrong.</p>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Beginner">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Beginner</div>
+                <h3>4. Use Ans and replay</h3>
+              </div>
+              <div class="count-tag">04</div>
+            </div>
+            <div class="lesson-body">
+              <p><strong>Ans</strong> stores your last answer. This saves time for chained calculations.</p>
+              <div class="lesson-example">12 × 5 = 60
+Then press ÷ 4 =
+Result: 15</div>
+              <p>You can also press the up arrow to revisit previous calculations and edit them without retyping the whole problem.</p>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Beginner">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Beginner</div>
+                <h3>5. Powers, roots and reciprocals</h3>
+              </div>
+              <div class="count-tag">05</div>
+            </div>
+            <div class="lesson-body">
+              <p><span class="k">x²</span> squares a number. <span class="k">x³</span> cubes a value. <span class="k">x⁻¹</span> gives the reciprocal.</p>
+              <div class="lesson-example">4 x⁻¹ = 0.25
+2 x² = 4
+√16 = 4</div>
+              <p>Roots are extremely useful in algebra and physics. Learn the exact key pattern instead of guessing.</p>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Beginner">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Beginner</div>
+                <h3>6. Fractions and decimal conversion</h3>
+              </div>
+              <div class="count-tag">06</div>
+            </div>
+            <div class="lesson-body">
+              <p>Use the fraction key to enter numbers in textbook style. With one tap, you can convert between fraction and decimal.</p>
+              <div class="lesson-example">1 a b/c 3 = 1/3
+S⇔D toggles decimal form</div>
+              <p>This is one of the most useful features for school-level math.</p>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Intermediate">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Intermediate</div>
+                <h3>7. Trigonometry: sin, cos, tan</h3>
+              </div>
+              <div class="count-tag">07</div>
+            </div>
+            <div class="lesson-body">
+              <p>You must set the angle mode first. For most school work, choose <strong>Deg</strong>.</p>
+              <div class="lesson-example">sin(30) = 0.5
+cos(60) = 0.5
+tan(45) = 1</div>
+              <p>Use SHIFT + sin for sin⁻¹, SHIFT + cos for cos⁻¹, and SHIFT + tan for tan⁻¹.</p>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Intermediate">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Intermediate</div>
+                <h3>8. Logarithms and exponentials</h3>
+              </div>
+              <div class="count-tag">08</div>
+            </div>
+            <div class="lesson-body">
+              <p><span class="k">log</span> is base-10 log. <span class="k">ln</span> is natural log.</p>
+              <div class="lesson-example">log(1000) = 3
+ln(e) = 1
+SHIFT + log = 10^x
+SHIFT + ln = e^x</div>
+              <p>These functions are essential in algebra, science, and growth/decay problems.</p>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Intermediate">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Intermediate</div>
+                <h3>9. Scientific notation and ENG mode</h3>
+              </div>
+              <div class="count-tag">09</div>
+            </div>
+            <div class="lesson-body">
+              <p>Use <span class="k">×10ˣ</span> for scientific notation. This is perfect for very small or very large values.</p>
+              <div class="lesson-example">3.2 × 10^5 = 320000
+1.5 × 10^-5 = 0.000015</div>
+              <p><strong>ENG</strong> mode makes the exponent a multiple of 3, which is helpful in engineering and electronics.</p>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Intermediate">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Intermediate</div>
+                <h3>10. Memory: STO and RCL</h3>
+              </div>
+              <div class="count-tag">10</div>
+            </div>
+            <div class="lesson-body">
+              <p>The calculator stores numbers in memory variables like A, B, C, X, Y and M. This lets you reuse values in long calculations.</p>
+              <div class="lesson-example">SHIFT + RCL = STO
+RCL then A recalls the stored value</div>
+              <p>Store important values when working on problems where the same input must be reused many times.</p>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Intermediate">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Intermediate</div>
+                <h3>11. CALC mode for repeated formulas</h3>
+              </div>
+              <div class="count-tag">11</div>
+            </div>
+            <div class="lesson-body">
+              <p>CALC is a powerful tool for formulas with variables. Type the formula, press CALC, then enter each variable one by one.</p>
+              <div class="lesson-example">A = πr²
+Type formula, press CALC, enter r = 5</div>
+              <p>This is excellent for checking many different values without retyping the equation every time.</p>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Advanced">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Advanced</div>
+                <h3>12. SOLVE and equations</h3>
+              </div>
+              <div class="count-tag">12</div>
+            </div>
+            <div class="lesson-body">
+              <p>SOLVE helps find a numerical root when you have an equation with one unknown.</p>
+              <div class="lesson-example">x² − 5x + 6 = 0
+Use SOLVE with an initial guess</div>
+              <p>It is extremely useful in applied math, physics, and engineering, especially when an equation cannot be solved by hand quickly.</p>
+            </div>
+          </article>
+
+          <article class="lesson" data-level="Advanced">
+            <div class="lesson-head">
+              <div class="lesson-title-wrap">
+                <div class="lesson-level">Advanced</div>
+                <h3>13. Complex numbers and matrices</h3>
+              </div>
+              <div class="count-tag">13</div>
+            </div>
+            <div class="lesson-body">
+              <p>The fx-991ES PLUS has strong support for complex numbers and matrix-style operations. These features are useful for advanced algebra and certain engineering tasks.</p>
+              <div class="lesson-example">MODE → CMPLX
+Use complex calculations in a specialized mode</div>
+              <p>These modes are not needed daily by everyone, but they matter once you move beyond basic algebra.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="full-guide">
+          <h2>Full guide: how to think about the calculator</h2>
+          <p>The calculator is not random. It follows a simple rule: the key displays a normal function, then SHIFT changes it to a gold function, and ALPHA adds a red custom function.</p>
+          <p><strong>For beginners:</strong> learn ON, OFF, AC, DEL, MODE, SHIFT, and the basic arithmetic keys first. If you can master those, the rest becomes easier.</p>
+          <p><strong>For intermediate students:</strong> focus on trigonometry, logarithms, scientific notation, memory, and repeated formulas. These are the skills most often used in class and exams.</p>
+          <p><strong>For advanced use:</strong> use SOLVE, CALC, memory variables, and specialized modes. These are for deeper problem solving and real-world technical work.</p>
+          <ul>
+            <li>Power on with ON. Power off with SHIFT + AC.</li>
+            <li>Always start by checking the angle mode.</li>
+            <li>Use brackets whenever you are unsure about the order of operations.</li>
+            <li>Memorize SHIFT + function patterns instead of trying random buttons.</li>
+            <li>Practice with small examples before using the calculator on exam problems.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const chips = document.querySelectorAll('.chip');
+      const lessons = document.querySelectorAll('.lesson');
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          const filter = chip.dataset.filter;
+
+          chips.forEach(item => item.classList.toggle('active', item === chip));
+
+          lessons.forEach(lesson => {
+            const matches = filter === 'all' || lesson.dataset.level === filter;
+            lesson.classList.toggle('hidden', !matches);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

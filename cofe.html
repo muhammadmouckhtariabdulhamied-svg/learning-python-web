@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Ordering Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+        h1 {
+            margin: 0;
+        }
+        main {
+            padding: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        #message {
+            color: green;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Coffee Ordering Website</h1>
+    </header>
+    <main>
+        <h2>Order Your Coffee</h2>
+        <form>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+            <label for="coffee">Coffee:</label>
+            <select id="coffee" name="coffee">
+                <option value="latte">Latte</option>
+                <option value="cappuccino">Cappuccino</option>
+                <option value="espresso">Espresso</option>
+            </select>
+            <button type="submit">Order</button>
+        </form>
+        @if (ViewBag.Message != null)
+        {
+            <div id="message">@ViewBag.Message</div>
+        }
+    </main>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.querySelector('#name').value;
+            const email = document.querySelector('#email').value;
+            const coffee = document.querySelector('#coffee').value;
+            alert(`Thank you, ${name}! We'll send you an email with your order soon.`);
+            document.getElementById('message').innerHTML = '';
+            document.getElementById('message').innerHTML = `Thank you, ${name}! We'll send you an email with your order soon.`;
+        });
+    </script>
+</body>
+</html>

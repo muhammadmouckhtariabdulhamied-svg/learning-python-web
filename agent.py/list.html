@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GES Prospectus & Provisions Master Checklist</title>
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+      display: flex;
+      justify-content: center;
+      padding: 30px 15px;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    .checklist-card {
+      background: #ffffff;
+      /* Ghana Coat of Arms watermark background */
+      background-image: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), 
+                        url('https://upload.wikimedia.org/wikipedia/commons/5/59/Coat_of_arms_of_Ghana.svg');
+      background-repeat: no-repeat;
+      background-position: center 180px;
+      background-size: 300px;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+      width: 100%;
+      max-width: 600px;
+      animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Card Entrance Animation */
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      color: #006b3f; /* Ghana National Green */
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    h2 {
+      margin: 4px 0 15px 0;
+      font-size: 15px;
+      color: #ce1126; /* Ghana National Red */
+      text-align: center;
+    }
+
+    .section-header {
+      background: #f1f5f9;
+      color: #1e293b;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      margin: 20px 0 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-left: 5px solid #fcd116; /* Ghana Gold */
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      padding: 9px 10px;
+      margin-bottom: 6px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    /* Hover Animation for List Items */
+    .checklist-item:hover {
+      background-color: #ffffff;
+      transform: translateX(6px) scale(1.01);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      margin-right: 12px;
+      cursor: pointer;
+      accent-color: #006b3f;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .checkbox:hover {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    .item-icon {
+      width: 24px;
+      text-align: center;
+      margin-right: 10px;
+      color: #475569;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .item-text {
+      font-size: 14px;
+      color: #334155;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      line-height: 1.3;
+    }
+
+    /* Completed Item Animation */
+    .completed {
+      text-decoration: line-through;
+      color: #94a3b8;
+      opacity: 0.6;
+      transform: translateX(3px);
+    }
+
+    /* Smooth pulse on check */
+    .completed-icon {
+      color: #006b3f !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="checklist-card">
+    <h1>Ghana Education Service</h1>
+    <h2>2025/26 National Harmonized Prospectus & Provisions</h2>
+
+    <ul class="checklist">
+
+      <!-- Section 1: Luggage & Bedding -->
+      <div class="section-header">
+        <i class="fa-solid fa-suitcase"></i> Luggage, Bedding & Sleepwear
+      </div>
+
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-box-archive item-icon"></i>
+        <span class="item-text">Hard Body Suit Case or Trunk</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-box item-icon"></i>
+        <span class="item-text">Chop Box (Wooden/Plastic)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-bed item-icon"></i>
+        <span class="item-text">Student Mattress (where not available in school)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-mattress-pillow item-icon"></i>
+        <span class="item-text">Pillow covered with Mackintosh</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-rug item-icon"></i>
+        <span class="item-text">2 Students' bedsheets with 2 pillow cases (Plain white)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-feather item-icon"></i>
+        <span class="item-text">1 Blanket & Sleeping cloth</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-shield-cat item-icon"></i>
+        <span class="item-text">Student's Size Mosquito Net</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-shirt item-icon"></i>
+        <span class="item-text">1 Pyjamas / Sleep wear</span>
+      </li>
+
+      <!-- Section 2: Clothing & Footwear -->
+      <div class="section-header">
+        <i class="fa-solid fa-vest"></i> Clothing, Uniforms & Footwear
+      </div>
+
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-shirt item-icon"></i>
+        <span class="item-text">2 White Shirts (1 short sleeve & 1 long sleeve)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">A Pair of brown  Trousers</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">A Pair of White Trousers (or school specific)</span>
+      </li>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-socks item-icon"></i>
+        <span class="item-text">2 Pair of Socks (school specific)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-vest item-icon"></i>
+        <span class="item-text">(3 boxer shorts & 3 singlets for boys)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-shoe-prints item-icon"></i>
+        <span class="item-text">Shoe (School specific colour)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-shoe-prints item-icon"></i>
+        <span class="item-text">Decent Sandals (school specific - No embellishment)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-shoe-prints item-icon"></i>
+        <span class="item-text">A Pair of Leather Slippers (school specific)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-shoe-prints item-icon"></i>
+        <span class="item-text">Decent Sneakers (black or white)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-hard-drive item-icon"></i>
+        <span class="item-text">Belt (School specific colour)</span>
+      </li>
+
+      <!-- Section 3: Personal Items & Toiletries -->
+      <div class="section-header">
+        <i class="fa-solid fa-pump-soap"></i> Cutlery
+      </div>
+
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-mug-hot item-icon"></i>
+        <span class="item-text">Drinking Cup, 1 Plastic/Stainless Plate & Cutlery Set</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-pump-soap item-icon"></i>
+        <span class="item-text">Toiletries (1 Deodorant, 1 T-roll, toothpaste, toothbrush, soap, pomade)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-notes-medical item-icon"></i>
+        <span class="item-text">2 packs of sanitary pads (for girls)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-bucket item-icon"></i>
+        <span class="item-text">1 Plastic Bucket with Cover and Pail</span>
+      </li>
+
+      <!-- Section 4: Academics & Faith -->
+      <div class="section-header">
+        <i class="fa-solid fa-book"></i> Academics, Bag & Faith
+      </div>
+
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-bag-shopping item-icon"></i>
+        <span class="item-text">1 School Bag</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-calculator item-icon"></i>
+        <span class="item-text">1 Mathematical Set & Scientific Calculator</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-book-bible item-icon"></i>
+        <span class="item-text"> Quran (School Specific)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-wrench item-icon"></i>
+        <span class="item-text">1 Hoe / Cutlass</span>
+      </li>
+
+      <!-- Section 5: School Cleaning Tools (Select Group) -->
+      <div class="section-header">
+        <i class="fa-solid fa-broom"></i> Items For School (Cleaning Tools)
+      </div>
+
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-hands-bubbles item-icon"></i>
+        <span class="item-text">Group A: Hard Gloves, Liquid Soap (5L), 1kg Washing Powder</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-broom item-icon"></i>
+        <span class="item-text">Group B: Bleach (Small), Dust Pan, Long Handle Broom, Scrubbing Brush</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-toilet-paper item-icon"></i>
+        <span class="item-text">Group C: Standing Mop & Bucket, Duster, Short Local Broom</span>
+      </li>
+
+      <!-- Section 6: Extra Provisions & Long-Lasting Snacks -->
+      <div class="section-header">
+        <i class="fa-solid fa-utensils"></i> Provisions 
+      </div>
+
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-tree item-icon"></i>
+        <span class="item-text">Dates (Tamaron / تمر) - High energy & non-perishable</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-seedling item-icon"></i>
+        <span class="item-text">Edible Seeds & Roasted Nuts (Sunflower, Pumpkin, Peanuts)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-bowl-rice item-icon"></i>
+        <span class="item-text">Provision Gari (Dry cassava grain - long shelf life)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-cookie item-icon"></i>
+        <span class="item-text">Assorted Biscuits, Wafers & Crackers</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <i class="fa-solid fa-bottle-water item-icon"></i>
+        <span class="item-text">Soft Drinks, Canned Drinks & Fruit Juice Packs</span>
+      </li>
+
+    </ul>
+  </div>
+
+  <script>
+    const checkboxes = document.querySelectorAll('.checkbox');
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener('change', function() {
+        const itemText = this.nextElementSibling.nextElementSibling;
+        const icon = this.nextElementSibling;
+        
+        if (this.checked) {
+          itemText.classList.add('completed');
+          icon.classList.add('completed-icon');
+        } else {
+          itemText.classList.remove('completed');
+          icon.classList.remove('completed-icon');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

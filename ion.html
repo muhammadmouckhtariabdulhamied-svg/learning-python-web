@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrolysis of Water</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            margin-bottom: 5px;
+        }
+        .input-group input[type="number"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 200px;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Electrolysis of Water</h1>
+        <p>Enter the number of hydrogen and oxygen ions in a mole of H2O:</p>
+        <div class="input-group">
+            <label for="num_hydrogen">Hydrogen ions:</label>
+            <input type="number" id="num_hydrogen" min="1" max="100" step="1">
+        </div>
+        <div class="input-group">
+            <label for="num_oxygen">Oxygen ions:</label>
+            <input type="number" id="num_oxygen" min="1" max="100" step="1">
+        </div>
+        <button onclick="startElectrolysis()">Start Electrolysis</button>
+    </div>
+    <script>
+        function startElectrolysis() {
+            const num_hydrogen = document.getElementById('num_hydrogen').value;
+            const num_oxygen = document.getElementById('num_oxygen').value;
+            const concentration = 0.1;
+            const voltage = 1.0;
+            const charge = num_hydrogen * 1.602e-19 + num_oxygen * 1.602e-19;
+            const current = charge / (voltage * concentration);
+            const duration = 1.0;
+            const timeTaken = duration * 1000;
+            alert(`Producing ${num_hydrogen} hydrogen ions and ${num_oxygen} oxygen ions...`);
+            alert(`Electrolysis will take approximately ${timeTaken} milliseconds.`);
+        }
+    </script>
+</body>
+</html>

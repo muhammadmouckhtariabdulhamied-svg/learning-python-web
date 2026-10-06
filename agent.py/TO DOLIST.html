@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GES Harmonized Prospectus & Provisions Checklist</title>
+  <style>
+    :root {
+      --bg-start: #eef6ff;
+      --bg-end: #f8fafc;
+      --card-bg: #ffffff;
+      --primary: #2563eb;
+      --primary-soft: #dbeafe;
+      --text: #1f2937;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: rgba(37, 99, 235, 0.12);
+      --completed: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      color: var(--text);
+    }
+
+    .checklist-card {
+      width: 100%;
+      max-width: 560px;
+      background: var(--card-bg);
+      padding: 28px 24px 20px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 18px;
+      box-shadow: 0 18px 45px var(--shadow);
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #0f172a;
+    }
+
+    p.subtitle {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      letter-spacing: 0.02em;
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 6px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 12px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      background: #fff;
+    }
+
+    .checklist-item:hover {
+      background: #f8fbff;
+      border-color: var(--border);
+      transform: translateY(-1px);
+    }
+
+    .checkbox {
+      width: 18px;
+      height: 18px;
+      margin-right: 12px;
+      cursor: pointer;
+      accent-color: var(--primary);
+      transform: scale(1.05);
+      flex-shrink: 0;
+    }
+
+    .item-text {
+      font-size: 0.97rem;
+      line-height: 1.5;
+      color: var(--text);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: var(--completed);
+    }
+
+    @media (max-width: 520px) {
+      .checklist-card {
+        padding: 22px 16px 18px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .item-text {
+        font-size: 0.92rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="checklist-card">
+    <h2>GHS Harmonized Prospectus</h2>
+    <p class="subtitle">School Items & Provisions Shopping List</p>
+
+    <ul class="checklist">
+      <!-- Harmonized Prospectus Items -->
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">1. White short-sleeve shirts & blue shorts/trousers</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">2. Black shoes & white socks</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">3. Sandals for house wear</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">4. School check attire / House dress</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">5. Physical Education (PE) kit & sneakers</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">6. Bedding: Mattress cover, bedsheets & blanket</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">7. Pillow and pillowcases</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">8. Towels and toiletries (soap, paste, brush)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">9. Metal trunk and padlock</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">10. Bucket, cup, and washing basin</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">11. Notebooks, mathematical set, and pens</span>
+      </li>
+
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">12. Milk powder and chocolate drink mix</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">13. Sugar and cereal (gari/cornflakes)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">14. Biscuits and seeds</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">15. snacks ( candy, soft drinks)</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">16. wipes</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">17. Shito / Pepper sauce and canned food</span>
+      </li>
+      <li class="checklist-item">
+        <input type="checkbox" class="checkbox">
+        <span class="item-text">18. Provisions bag or backpack for carrying snacks</span>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    const checkboxes = document.querySelectorAll('.checkbox');
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener('change', function() {
+        const itemText = this.nextElementSibling;
+        
+        if (this.checked) {
+          itemText.classList.add('completed');
+        } else {
+          itemText.classList.remove('completed');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

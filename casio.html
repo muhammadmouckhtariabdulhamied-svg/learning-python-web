@@ -1,0 +1,942 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minimal Calculator</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --panel-2: #edf2f8;
+      --screen: #eaf4ea;
+      --screen-text: #1b2b1b;
+      --primary: #111827;
+      --muted: #6b7280;
+      --line: #dfe5ee;
+      --accent: #176b87;
+      --accent-soft: #d8f1f5;
+      --operator: #f7e8d1;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(ellipse at 12% 8%, rgba(245, 185, 92, 0.18), transparent 30%),
+        radial-gradient(ellipse at 92% 82%, rgba(73, 178, 174, 0.15), transparent 34%),
+        linear-gradient(145deg, #f4f7fb 0%, #fbfaf6 100%);
+      color: var(--primary);
+    }
+
+    .page {
+      width: min(100%, 1120px);
+      display: grid;
+      grid-template-columns: 370px minmax(0, 1fr);
+      gap: 24px;
+      padding: 32px 20px;
+    }
+
+    .calculator,
+    .guide,
+    .workshop {
+      animation: arrive 0.65s cubic-bezier(0.2, 0.75, 0.25, 1) both;
+    }
+
+    .guide { animation-delay: 0.1s; }
+    .workshop { animation-delay: 0.2s; }
+
+    @keyframes arrive {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .calculator {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 22px 18px 18px;
+    }
+
+    .calculator[data-power="off"] .display-wrap {
+      background: #e4e8e3;
+      border-color: #cbd2ca;
+    }
+
+    .brand {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .power-group { display: flex; align-items: center; gap: 8px; }
+
+    .power-button {
+      min-width: 52px;
+      border: 0;
+      border-radius: 9px;
+      padding: 8px 12px;
+      background: #16845b;
+      color: white;
+      font: inherit;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .power-button:hover { transform: translateY(-2px); background: #106d4a; }
+    .power-button:focus-visible { outline: 3px solid #62b892; outline-offset: 3px; }
+    .power-button.is-off { background: #d45c4f; }
+    .power-status { color: var(--muted); font-size: 10px; font-weight: 800; }
+
+    .status {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+
+    .display-wrap {
+      background: #eef3ee;
+      border: 1px solid #d8e0d6;
+      border-radius: 16px;
+      padding: 14px 14px 12px;
+      min-height: 130px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .history {
+      min-height: 26px;
+      text-align: right;
+      color: var(--muted);
+      font-size: 15px;
+      word-break: break-all;
+    }
+
+    .display {
+      text-align: right;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      font-weight: 700;
+      word-break: break-all;
+      color: var(--screen-text);
+    }
+
+    .display.changed { animation: display-pop 0.2s ease-out; }
+
+    @keyframes display-pop {
+      50% { transform: scale(1.035); }
+    }
+
+    .pad {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .scientific-pad {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      height: 56px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.16s ease, filter 0.16s ease, box-shadow 0.16s ease;
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.04);
+    }
+
+    .btn:hover { filter: brightness(0.96); transform: translateY(-2px); box-shadow: 0 5px 12px rgba(15, 23, 42, 0.12); }
+    .btn:active { transform: translateY(1px) scale(0.98); box-shadow: inset 0 2px 4px rgba(0,0,0,0.08); }
+    .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .btn:disabled { cursor: default; opacity: 0.65; }
+
+    .btn.primary { background: #177c76; color: white; }
+    .btn.operator { background: var(--operator); color: #743f14; }
+    .btn.secondary { background: var(--panel-2); color: var(--primary); }
+    .btn.science { height: 42px; border-radius: 11px; background: #dff1e7; color: #176541; font-size: 0.88rem; }
+    .btn.zero { grid-column: span 2; }
+
+    .guide {
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+    }
+
+    .guide h1 {
+      margin: 0 0 8px;
+      font-size: 1.9rem;
+      line-height: 1.2;
+    }
+
+    .guide-intro {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .lesson-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .lesson-card {
+      --lesson-tint: #e1f1f5;
+      --lesson-ink: #176b87;
+      min-width: 0;
+      min-height: 106px;
+      padding: 13px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 7px;
+      text-align: left;
+      color: var(--primary);
+      background: var(--lesson-tint);
+      border: 1px solid transparent;
+      border-radius: 13px;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .lesson-card:nth-child(2) { --lesson-tint: #fff0d9; --lesson-ink: #9a5a12; }
+    .lesson-card:nth-child(3) { --lesson-tint: #e1f3e7; --lesson-ink: #24724b; }
+    .lesson-card:nth-child(4) { --lesson-tint: #f9e6e1; --lesson-ink: #a34d3e; }
+    .lesson-card:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(15, 23, 42, 0.09); }
+    .lesson-card[aria-selected="true"] { border-color: var(--lesson-ink); box-shadow: inset 0 0 0 1px var(--lesson-ink); }
+    .lesson-card:focus-visible { outline: 3px solid var(--lesson-ink); outline-offset: 2px; }
+    .lesson-card-top { display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 8px; }
+    .lesson-number { color: var(--lesson-ink); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; }
+    .lesson-state { color: var(--muted); font-size: 0.7rem; }
+    .lesson-card strong { font-size: 0.96rem; }
+
+    .lesson-panel {
+      margin-top: 14px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #fff;
+    }
+
+    .lesson-panel.changing { animation: feedback-in 0.28s ease-out; }
+    .lesson-panel h2 { margin: 0 0 8px; font-size: 1.35rem; }
+    .lesson-panel p { color: var(--muted); line-height: 1.6; }
+    .lesson-prompt { margin: 14px 0; padding: 12px 14px; border-left: 4px solid #e4a642; border-radius: 5px 10px 10px 5px; background: #fff5e4; }
+    .lesson-prompt span { display: block; margin-bottom: 4px; color: #895813; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; }
+    .lesson-feedback { min-height: 26px; margin: 12px 0 0; font-weight: 700; }
+    .lesson-feedback[data-state="success"] { color: #19734d; }
+    .lesson-feedback[data-state="error"] { color: #b24339; }
+    .lesson-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; }
+    .lesson-count { color: var(--muted); font-size: 0.82rem; }
+    .lesson-count progress { display: block; width: 130px; margin-top: 5px; accent-color: #16845b; }
+    .lesson-next { height: 42px; padding: 0 14px; border-radius: 10px; font-size: 0.9rem; }
+
+    .workshop {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--line);
+      padding-top: 24px;
+    }
+
+    .workshop-heading,
+    .challenge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .workshop h2 {
+      margin: 0 0 8px;
+      font-size: 1.5rem;
+    }
+
+    .workshop p { color: var(--muted); line-height: 1.6; }
+    .workshop-intro { margin: 0; }
+
+    .progress-wrap { min-width: 150px; color: var(--muted); font-size: 0.9rem; }
+    .progress-wrap progress { display: block; width: 100%; margin-top: 8px; accent-color: var(--accent); }
+
+    .challenge-row {
+      margin-top: 20px;
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .problem-label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; }
+    .problem { display: block; margin-top: 6px; font-size: 1.8rem; }
+    .challenge-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .challenge-actions .btn { height: 46px; padding: 0 16px; border-radius: 10px; font-size: 0.95rem; }
+    .feedback { min-height: 28px; margin: 14px 0 0; }
+    .feedback[data-state="success"] { color: #167447; }
+    .feedback[data-state="error"] { color: #b42318; }
+    .feedback[data-state="success"] { animation: feedback-in 0.32s ease-out; }
+    .feedback[data-state="error"] { animation: nudge 0.32s ease-in-out; }
+
+    @keyframes feedback-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes nudge {
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    [hidden] { display: none !important; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .tag {
+      display: inline-block;
+      background: #d8f1f5;
+      color: #176b87;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        grid-template-columns: 1fr;
+        padding: 24px 16px;
+      }
+
+      .workshop-heading,
+      .challenge-row { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (max-width: 420px) {
+      .guide { padding: 18px 14px; }
+      .lesson-card { min-height: 98px; padding: 11px; }
+      .lesson-panel { padding: 15px; }
+      .lesson-footer { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="calculator" data-power="off" aria-label="Scientific calculator">
+      <div class="brand">
+        <span>Casio fx-991</span>
+        <div class="power-group">
+          <button id="powerButton" class="power-button" type="button" aria-label="Turn calculator on">ON</button>
+          <span id="powerStatus" class="power-status" aria-live="polite">OFF</span>
+        </div>
+      </div>
+
+      <div class="display-wrap">
+        <div id="history" class="history">0</div>
+        <div id="display" class="display" aria-live="polite">0</div>
+      </div>
+
+      <div class="scientific-pad" aria-label="Scientific functions">
+        <button class="btn science" data-action="scientific" data-function="sin" type="button">sin</button>
+        <button class="btn science" data-action="scientific" data-function="cos" type="button">cos</button>
+        <button class="btn science" data-action="scientific" data-function="tan" type="button">tan</button>
+        <button class="btn science" data-action="scientific" data-function="sqrt" type="button">√</button>
+        <button class="btn science" data-action="scientific" data-function="square" type="button">x²</button>
+      </div>
+
+      <div class="pad">
+        <button class="btn secondary" data-action="clear">AC</button>
+        <button class="btn secondary" data-action="delete">DEL</button>
+        <button class="btn secondary" data-action="percent">%</button>
+        <button class="btn operator" data-value="/">÷</button>
+
+        <button class="btn secondary" data-value="7">7</button>
+        <button class="btn secondary" data-value="8">8</button>
+        <button class="btn secondary" data-value="9">9</button>
+        <button class="btn operator" data-value="*">×</button>
+
+        <button class="btn secondary" data-value="4">4</button>
+        <button class="btn secondary" data-value="5">5</button>
+        <button class="btn secondary" data-value="6">6</button>
+        <button class="btn operator" data-value="-">−</button>
+
+        <button class="btn secondary" data-value="1">1</button>
+        <button class="btn secondary" data-value="2">2</button>
+        <button class="btn secondary" data-value="3">3</button>
+        <button class="btn operator" data-value="+">+</button>
+
+        <button class="btn secondary zero" data-value="0">0</button>
+        <button class="btn secondary" data-value=".">.</button>
+        <button class="btn primary" data-action="equals">=</button>
+      </div>
+    </div>
+
+    <section class="guide" aria-label="Interactive calculator lessons">
+      <div class="tag">Interactive lessons</div>
+      <h1>Learn it by pressing the keys</h1>
+      <p class="guide-intro">Choose a lesson card, follow its prompt, and try the steps on the calculator beside it.</p>
+
+      <div class="lesson-grid" role="tablist" aria-label="Calculator lessons">
+        <button class="lesson-card" id="lessonTab0" type="button" role="tab" aria-selected="true" aria-controls="lessonPanel" data-lesson="0">
+          <span class="lesson-card-top"><span class="lesson-number">Lesson 01</span><span class="lesson-state">Start here</span></span>
+          <strong>Turn it on</strong>
+        </button>
+        <button class="lesson-card" id="lessonTab1" type="button" role="tab" aria-selected="false" aria-controls="lessonPanel" data-lesson="1" tabindex="-1">
+          <span class="lesson-card-top"><span class="lesson-number">Lesson 02</span><span class="lesson-state">Tap to open</span></span>
+          <strong>Add two numbers</strong>
+        </button>
+        <button class="lesson-card" id="lessonTab2" type="button" role="tab" aria-selected="false" aria-controls="lessonPanel" data-lesson="2" tabindex="-1">
+          <span class="lesson-card-top"><span class="lesson-number">Lesson 03</span><span class="lesson-state">Tap to open</span></span>
+          <strong>Find a square root</strong>
+        </button>
+        <button class="lesson-card" id="lessonTab3" type="button" role="tab" aria-selected="false" aria-controls="lessonPanel" data-lesson="3" tabindex="-1">
+          <span class="lesson-card-top"><span class="lesson-number">Lesson 04</span><span class="lesson-state">Tap to open</span></span>
+          <strong>Try sine in degrees</strong>
+        </button>
+      </div>
+
+      <div id="lessonPanel" class="lesson-panel" role="tabpanel" aria-labelledby="lessonTab0" tabindex="0">
+        <div class="problem-label" id="lessonLevel">Lesson 01 · Getting started</div>
+        <h2 id="lessonTitle">Wake up the calculator</h2>
+        <p id="lessonInstructions">The calculator is off. Press the green ON button on the calculator to turn it on.</p>
+        <div class="lesson-prompt">
+          <span>Your turn</span>
+          <strong id="lessonGoal">Press ON. Watch the screen wake up.</strong>
+        </div>
+        <p id="lessonFeedback" class="lesson-feedback" role="status" aria-live="polite">The calculator is waiting for you.</p>
+        <div class="lesson-footer">
+          <div class="lesson-count"><span id="lessonCounter">Lesson 1 of 4</span><progress id="lessonProgress" value="0" max="4" aria-label="Lesson progress"></progress></div>
+          <button id="nextLesson" class="btn primary lesson-next" type="button" hidden>Next lesson</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="workshop" aria-labelledby="workshopTitle">
+      <div class="workshop-heading">
+        <div>
+          <div class="tag">Hands-on project</div>
+          <h2 id="workshopTitle">Calculator practice</h2>
+          <p class="workshop-intro">Solve each problem with the keypad, then check your answer. Get all three right to finish the round.</p>
+        </div>
+        <div class="progress-wrap">
+          <span id="challengeProgress">Problem 1 of 3</span>
+          <progress id="roundProgress" value="0" max="3" aria-label="Practice round progress"></progress>
+        </div>
+      </div>
+      <div class="challenge-row">
+        <div>
+          <span class="problem-label">Your problem</span>
+          <strong id="challengeProblem" class="problem" aria-live="polite"></strong>
+        </div>
+        <div class="challenge-actions">
+          <button id="checkAnswer" class="btn primary" type="button">Check answer</button>
+          <button id="nextProblem" class="btn secondary" type="button" hidden>Next problem</button>
+          <button id="restartRound" class="btn secondary" type="button">Start over</button>
+        </div>
+      </div>
+      <p id="challengeFeedback" class="feedback" role="status" aria-live="polite">Enter your answer on the calculator, then check it here.</p>
+    </section>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+    const history = document.getElementById('history');
+    const buttons = document.querySelectorAll('.calculator .btn');
+    const challengeProblem = document.getElementById('challengeProblem');
+    const challengeProgress = document.getElementById('challengeProgress');
+    const roundProgress = document.getElementById('roundProgress');
+    const challengeFeedback = document.getElementById('challengeFeedback');
+    const checkAnswerButton = document.getElementById('checkAnswer');
+    const nextProblemButton = document.getElementById('nextProblem');
+    const restartRoundButton = document.getElementById('restartRound');
+    const powerButton = document.getElementById('powerButton');
+    const powerStatus = document.getElementById('powerStatus');
+    const lessonCards = document.querySelectorAll('.lesson-card');
+    const lessonPanel = document.getElementById('lessonPanel');
+    const lessonLevel = document.getElementById('lessonLevel');
+    const lessonTitle = document.getElementById('lessonTitle');
+    const lessonInstructions = document.getElementById('lessonInstructions');
+    const lessonGoal = document.getElementById('lessonGoal');
+    const lessonFeedback = document.getElementById('lessonFeedback');
+    const lessonCounter = document.getElementById('lessonCounter');
+    const lessonProgress = document.getElementById('lessonProgress');
+    const nextLessonButton = document.getElementById('nextLesson');
+
+    const lessons = [
+      {
+        level: 'Lesson 01 · Getting started',
+        title: 'Wake up the calculator',
+        instructions: 'The calculator is off. Press the green ON button on the calculator to turn it on.',
+        goal: 'Press ON. Watch the screen wake up.'
+      },
+      {
+        level: 'Lesson 02 · Arithmetic',
+        title: 'Add two numbers',
+        instructions: 'Use the number and operator keys just like writing a sum. Press equals to see the answer.',
+        goal: 'Enter 2 + 3 = and get 5.'
+      },
+      {
+        level: 'Lesson 03 · Roots and powers',
+        title: 'Find a square root',
+        instructions: 'Enter the number first, then choose the square-root key. A square root asks which number multiplied by itself makes the input.',
+        goal: 'Enter 16, then press √. The answer is 4.'
+      },
+      {
+        level: 'Lesson 04 · Trigonometry',
+        title: 'Try sine in degrees',
+        instructions: 'This simulator uses degrees. Enter the angle first, then press sin to find the sine value.',
+        goal: 'Enter 30, then press sin. The answer is 0.5.'
+      }
+    ];
+
+    let currentValue = '0';
+    let storedValue = null;
+    let operator = null;
+    let waitingForSecondValue = false;
+    let justEvaluated = false;
+    let problemNumber = 1;
+    let score = 0;
+    let activeProblem;
+    let problemSolved = false;
+    let activeLesson = 0;
+    let isPoweredOn = false;
+    let lastScientificFunction = null;
+    let lessonAdvanceTimer = null;
+    const completedLessons = new Set();
+
+    function updateDisplay() {
+      display.textContent = isPoweredOn ? currentValue : '';
+      display.classList.remove('changed');
+      void display.offsetWidth;
+      if (isPoweredOn) display.classList.add('changed');
+    }
+
+    function updatePowerControls() {
+      document.querySelector('.calculator').dataset.power = isPoweredOn ? 'on' : 'off';
+      powerButton.textContent = isPoweredOn ? 'OFF' : 'ON';
+      powerButton.classList.toggle('is-off', isPoweredOn);
+      powerButton.setAttribute('aria-label', isPoweredOn ? 'Turn calculator off' : 'Turn calculator on');
+      powerStatus.textContent = isPoweredOn ? 'ON' : 'OFF';
+      buttons.forEach((button) => { button.disabled = !isPoweredOn; });
+    }
+
+    function renderLessonProgress() {
+      lessonCards.forEach((card, index) => {
+        const state = card.querySelector('.lesson-state');
+        card.setAttribute('aria-selected', String(index === activeLesson));
+        card.tabIndex = index === activeLesson ? 0 : -1;
+        state.textContent = completedLessons.has(index)
+          ? 'Complete ✓'
+          : index === activeLesson ? 'In progress' : 'Tap to open';
+      });
+      lessonProgress.value = completedLessons.size;
+    }
+
+    function selectLesson(index) {
+      if (index < 0 || index >= lessons.length) return;
+      window.clearTimeout(lessonAdvanceTimer);
+      activeLesson = index;
+      const lesson = lessons[index];
+      lessonLevel.textContent = lesson.level;
+      lessonTitle.textContent = lesson.title;
+      lessonInstructions.textContent = lesson.instructions;
+      lessonGoal.textContent = lesson.goal;
+      lessonCounter.textContent = `Lesson ${index + 1} of ${lessons.length}`;
+      lessonFeedback.textContent = completedLessons.has(index)
+        ? 'Hooray! 🎉 You have completed this lesson.'
+        : index === 0 && !isPoweredOn ? 'The calculator is waiting for you.' : 'Try the steps on the calculator.';
+      lessonFeedback.dataset.state = completedLessons.has(index) ? 'success' : '';
+      nextLessonButton.hidden = !completedLessons.has(index) || completedLessons.size === lessons.length;
+      lessonPanel.setAttribute('aria-labelledby', lessonCards[index].id);
+      lessonPanel.classList.remove('changing');
+      void lessonPanel.offsetWidth;
+      lessonPanel.classList.add('changing');
+      renderLessonProgress();
+    }
+
+    function nextIncompleteLesson() {
+      for (let offset = 1; offset <= lessons.length; offset += 1) {
+        const index = (activeLesson + offset) % lessons.length;
+        if (!completedLessons.has(index)) return index;
+      }
+      return -1;
+    }
+
+    function completeActiveLesson() {
+      if (completedLessons.has(activeLesson)) return;
+      completedLessons.add(activeLesson);
+      lessonFeedback.textContent = 'Hooray! 🎉 You got it!';
+      lessonFeedback.dataset.state = 'success';
+      renderLessonProgress();
+      const nextIndex = nextIncompleteLesson();
+      if (nextIndex === -1) {
+        lessonFeedback.textContent = 'Hooray! 🎉 You finished every lesson!';
+        nextLessonButton.hidden = true;
+        return;
+      }
+      nextLessonButton.hidden = false;
+      lessonAdvanceTimer = window.setTimeout(() => selectLesson(nextIndex), 1100);
+    }
+
+    function checkLessonProgress() {
+      if (!isPoweredOn || completedLessons.has(activeLesson)) return;
+      if (activeLesson === 1 && justEvaluated && Number(currentValue) === 5 && history.textContent === '2 + 5') {
+        completeActiveLesson();
+      } else if (activeLesson === 2 && lastScientificFunction === 'sqrt' && Number(currentValue) === 4) {
+        completeActiveLesson();
+      } else if (activeLesson === 3 && lastScientificFunction === 'sin' && Math.abs(Number(currentValue) - 0.5) < 1e-10) {
+        completeActiveLesson();
+      }
+    }
+
+    function resetCalculator() {
+      currentValue = '0';
+      storedValue = null;
+      operator = null;
+      waitingForSecondValue = false;
+      justEvaluated = false;
+      lastScientificFunction = null;
+      history.textContent = '0';
+      updateDisplay();
+    }
+
+    function handleNumber(value) {
+      lastScientificFunction = null;
+      if (currentValue === 'Error' || justEvaluated) {
+        currentValue = value;
+        justEvaluated = false;
+        waitingForSecondValue = false;
+        history.textContent = '0';
+        updateDisplay();
+        return;
+      }
+
+      if (waitingForSecondValue) {
+        currentValue = value;
+        waitingForSecondValue = false;
+      } else {
+        currentValue = currentValue === '0' ? value : currentValue + value;
+      }
+
+      history.textContent = storedValue !== null && operator ? `${storedValue} ${operator}` : '0';
+      updateDisplay();
+    }
+
+    function handleDecimal() {
+      lastScientificFunction = null;
+      if (currentValue === 'Error' || justEvaluated) {
+        currentValue = '0.';
+        justEvaluated = false;
+        waitingForSecondValue = false;
+        history.textContent = '0';
+        updateDisplay();
+        return;
+      }
+
+      if (waitingForSecondValue) {
+        currentValue = '0.';
+        waitingForSecondValue = false;
+        updateDisplay();
+        return;
+      }
+
+      if (!currentValue.includes('.')) {
+        currentValue += '.';
+        updateDisplay();
+      }
+    }
+
+    function performCalculation(firstValue, secondValue, currentOperator) {
+      const a = Number(firstValue);
+      const b = Number(secondValue);
+
+      switch (currentOperator) {
+        case '+': return a + b;
+        case '-': return a - b;
+        case '*': return a * b;
+        case '/': return b === 0 ? 'Error' : a / b;
+        default: return b;
+      }
+    }
+
+    function chooseOperator(nextOperator) {
+      lastScientificFunction = null;
+      const inputValue = Number(currentValue);
+
+      if (storedValue === null) {
+        storedValue = inputValue;
+      } else if (operator) {
+        const result = performCalculation(storedValue, inputValue, operator);
+        if (result === 'Error' || !Number.isFinite(result)) {
+          currentValue = 'Error';
+          storedValue = null;
+          operator = null;
+          waitingForSecondValue = true;
+          updateDisplay();
+          return;
+        }
+        currentValue = String(result);
+        storedValue = result;
+      }
+
+      operator = nextOperator;
+      waitingForSecondValue = true;
+      justEvaluated = false;
+      history.textContent = `${storedValue} ${operator}`;
+      updateDisplay();
+    }
+
+    function evaluate() {
+      if (storedValue === null || operator === null || waitingForSecondValue) {
+        return;
+      }
+
+      const result = performCalculation(storedValue, currentValue, operator);
+      if (result === 'Error' || !Number.isFinite(result)) {
+        currentValue = 'Error';
+        storedValue = null;
+        operator = null;
+        waitingForSecondValue = true;
+        history.textContent = 'Cannot divide by zero';
+        updateDisplay();
+        return;
+      }
+      currentValue = String(result);
+      history.textContent = `${storedValue} ${operator} ${currentValue}`;
+      storedValue = null;
+      operator = null;
+      waitingForSecondValue = false;
+      justEvaluated = true;
+      updateDisplay();
+      checkLessonProgress();
+    }
+
+    function applyScientificFunction(name) {
+      const input = Number(currentValue);
+      let result;
+      if (name === 'sqrt') result = input < 0 ? 'Error' : Math.sqrt(input);
+      else if (name === 'square') result = input ** 2;
+      else if (name === 'sin') result = Math.sin(input * Math.PI / 180);
+      else if (name === 'cos') result = Math.cos(input * Math.PI / 180);
+      else if (name === 'tan') result = Math.tan(input * Math.PI / 180);
+      else return;
+
+      if (result !== 'Error' && Number.isFinite(result)) {
+        currentValue = String(Number(result.toFixed(10)));
+        history.textContent = `${name}(${input})`;
+      } else {
+        currentValue = 'Error';
+        history.textContent = 'Invalid input';
+      }
+      storedValue = null;
+      operator = null;
+      waitingForSecondValue = false;
+      justEvaluated = true;
+      lastScientificFunction = name;
+      updateDisplay();
+      checkLessonProgress();
+    }
+
+    function deleteLastCharacter() {
+      if (waitingForSecondValue) return;
+
+      currentValue = currentValue.length > 1 ? currentValue.slice(0, -1) : '0';
+      updateDisplay();
+    }
+
+    function applyPercent() {
+      if (currentValue === 'Error') return;
+      const value = Number(currentValue) / 100;
+      currentValue = String(value);
+      justEvaluated = false;
+      updateDisplay();
+    }
+
+    function makeProblem() {
+      const operation = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
+      const first = Math.floor(Math.random() * 9) + 2;
+      const second = Math.floor(Math.random() * 8) + 2;
+      let left = first;
+      let right = second;
+      let answer;
+
+      if (operation === '+') answer = left + right;
+      if (operation === '-') {
+        if (left < right) [left, right] = [right, left];
+        answer = left - right;
+      }
+      if (operation === '*') answer = left * right;
+      if (operation === '/') {
+        left = first * second;
+        answer = first;
+      }
+
+      return { left, right, operation, answer };
+    }
+
+    function showProblem() {
+      activeProblem = makeProblem();
+      problemSolved = false;
+      challengeProblem.textContent = `${activeProblem.left} ${activeProblem.operation} ${activeProblem.right} = ?`;
+      challengeProgress.textContent = `Problem ${problemNumber} of 3`;
+      roundProgress.value = score;
+      challengeFeedback.textContent = 'Enter your answer on the calculator, then check it here.';
+      challengeFeedback.dataset.state = '';
+      checkAnswerButton.hidden = false;
+      checkAnswerButton.disabled = false;
+      nextProblemButton.hidden = true;
+      resetCalculator();
+    }
+
+    checkAnswerButton.addEventListener('click', () => {
+      if (problemSolved) return;
+      if (Number(currentValue) === activeProblem.answer) {
+        problemSolved = true;
+        score += 1;
+        roundProgress.value = score;
+        challengeFeedback.textContent = 'Correct. Nice work.';
+        challengeFeedback.dataset.state = 'success';
+        checkAnswerButton.disabled = true;
+        if (problemNumber < 3) nextProblemButton.hidden = false;
+        else {
+          challengeProgress.textContent = 'Round complete';
+          challengeFeedback.textContent = `Round complete. You got ${score} out of 3 correct.`;
+        }
+      } else {
+        challengeFeedback.textContent = 'Not quite. Check the display and try again.';
+        challengeFeedback.dataset.state = 'error';
+      }
+    });
+
+    nextProblemButton.addEventListener('click', () => {
+      problemNumber += 1;
+      showProblem();
+    });
+
+    restartRoundButton.addEventListener('click', () => {
+      problemNumber = 1;
+      score = 0;
+      showProblem();
+    });
+
+    powerButton.addEventListener('click', () => {
+      isPoweredOn = !isPoweredOn;
+      updatePowerControls();
+      resetCalculator();
+      if (isPoweredOn && activeLesson === 0) completeActiveLesson();
+      else if (!isPoweredOn) {
+        lessonFeedback.textContent = 'The calculator is off. Press ON when you are ready.';
+        lessonFeedback.dataset.state = '';
+      }
+    });
+
+    lessonCards.forEach((card) => {
+      card.addEventListener('click', () => selectLesson(Number(card.dataset.lesson)));
+    });
+
+    document.querySelector('.lesson-grid').addEventListener('keydown', (event) => {
+      const currentIndex = Number(document.activeElement.dataset.lesson);
+      let nextIndex = currentIndex;
+      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (currentIndex + 1) % lessons.length;
+      else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (currentIndex - 1 + lessons.length) % lessons.length;
+      else if (event.key === 'Home') nextIndex = 0;
+      else if (event.key === 'End') nextIndex = lessons.length - 1;
+      else return;
+      event.preventDefault();
+      lessonCards[nextIndex].focus();
+      selectLesson(nextIndex);
+    });
+
+    nextLessonButton.addEventListener('click', () => {
+      const nextIndex = nextIncompleteLesson();
+      if (nextIndex !== -1) selectLesson(nextIndex);
+    });
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const value = button.dataset.value;
+        const action = button.dataset.action;
+
+        if (value !== undefined) {
+          if (/[0-9]/.test(value)) {
+            handleNumber(value);
+          } else if (value === '.') {
+            handleDecimal();
+          } else {
+            chooseOperator(value);
+          }
+          return;
+        }
+
+        switch (action) {
+          case 'clear':
+            resetCalculator();
+            break;
+          case 'delete':
+            deleteLastCharacter();
+            break;
+          case 'percent':
+            applyPercent();
+            break;
+          case 'equals':
+            evaluate();
+            break;
+          case 'scientific':
+            applyScientificFunction(button.dataset.function);
+            break;
+          default:
+            break;
+        }
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      const key = event.key;
+
+      if (event.target instanceof HTMLElement && event.target.tagName === 'BUTTON') return;
+      if (!isPoweredOn) return;
+
+      if (/^[0-9]$/.test(key)) handleNumber(key);
+      else if (key === '.') handleDecimal();
+      else if (['+', '-', '*', '/'].includes(key)) chooseOperator(key);
+      else if (key === 'Enter' || key === '=') evaluate();
+      else if (key === 'Backspace') deleteLastCharacter();
+      else if (key === 'Escape') resetCalculator();
+    });
+
+    showProblem();
+    updatePowerControls();
+    selectLesson(0);
+  </script>
+</body>
+</html>
